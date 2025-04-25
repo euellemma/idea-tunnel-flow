@@ -1,9 +1,11 @@
+
 import { useState } from 'react';
 import { Edit3, Trash2, ChevronDown, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -115,7 +117,7 @@ export function TodoList({
       {tasks.map((task) => (
         <Card 
           key={task.id} 
-          className="border-2 border-tunnel-light-gray overflow-hidden"
+          className="border-2 border-gray-300 overflow-hidden"
         >
           <div className="p-3">
             <div className="flex items-start mb-2 group">
@@ -124,9 +126,9 @@ export function TodoList({
                 className="mt-1 mr-2 outline-none"
               >
                 {expandedTasks[task.id] ? (
-                  <ChevronDown className="h-5 w-5 text-tunnel-medium-gray" />
+                  <ChevronDown className="h-6 w-6 text-gray-600" />
                 ) : (
-                  <ChevronRight className="h-5 w-5 text-tunnel-medium-gray" />
+                  <ChevronRight className="h-6 w-6 text-gray-600" />
                 )}
               </button>
               
@@ -136,7 +138,7 @@ export function TodoList({
                     <Input
                       value={editingText}
                       onChange={(e) => setEditingText(e.target.value)}
-                      className="flex-1 mr-2 text-base"
+                      className="flex-1 mr-2 text-lg"
                       autoFocus
                     />
                     <div className="flex space-x-2">
@@ -146,7 +148,7 @@ export function TodoList({
                   </div>
                 ) : (
                   <div 
-                    className="font-medium cursor-pointer text-lg"
+                    className="font-medium cursor-pointer text-xl"
                     onClick={() => toggleTaskExpansion(task.id)}
                   >
                     {task.text}
@@ -159,7 +161,7 @@ export function TodoList({
                   <Button 
                     variant="ghost" 
                     size="icon" 
-                    className="h-8 w-8"
+                    className="h-9 w-9"
                     onClick={() => startEditingTask(task)}
                   >
                     <Edit3 className="h-5 w-5" />
@@ -167,7 +169,7 @@ export function TodoList({
                   <Button 
                     variant="ghost" 
                     size="icon" 
-                    className="h-8 w-8"
+                    className="h-9 w-9"
                     onClick={() => setDeleteTaskId(task.id)}
                   >
                     <Trash2 className="h-5 w-5" />
@@ -177,9 +179,9 @@ export function TodoList({
             </div>
             
             {expandedTasks[task.id] && (
-              <div className="pl-6 space-y-2">
+              <div className="pl-6 space-y-3">
                 {task.subtasks.map((subtask) => (
-                  <div key={subtask.id} className="pb-1">
+                  <div key={subtask.id} className="pb-2 pt-1">
                     <div className="flex items-start group">
                       <Checkbox
                         checked={subtask.isCompleted}
@@ -206,15 +208,18 @@ export function TodoList({
                         ) : (
                           <>
                             <div 
-                              className={`text-base cursor-pointer ${subtask.isCompleted ? 'line-through text-tunnel-medium-gray' : ''}`}
+                              className={`text-lg cursor-pointer ${subtask.isCompleted ? 'line-through text-gray-500' : ''}`}
                               onClick={() => toggleSubtaskExpansion(subtask.id)}
                             >
                               {subtask.text}
                             </div>
                             
                             {expandedSubtasks[subtask.id] && (
-                              <div className="mt-2 ml-2 text-sm text-tunnel-medium-gray space-y-1">
-                                <div><span className="font-medium">Time:</span> {subtask.timeEstimate}</div>
+                              <div className="mt-2 ml-2 text-sm text-gray-600 space-y-2">
+                                <div className="flex items-center gap-2">
+                                  <span className="font-medium">Time:</span> 
+                                  <Badge variant="outline" className="bg-gray-100">{subtask.timeEstimate}</Badge>
+                                </div>
                                 <div><span className="font-medium">Tip:</span> {subtask.tips}</div>
                                 <div><span className="font-medium">Note:</span> {subtask.encouragement}</div>
                               </div>
@@ -228,7 +233,7 @@ export function TodoList({
                           <Button 
                             variant="ghost" 
                             size="icon" 
-                            className="h-8 w-8"
+                            className="h-9 w-9"
                             onClick={() => startEditingSubtask(subtask)}
                           >
                             <Edit3 className="h-5 w-5" />
@@ -236,7 +241,7 @@ export function TodoList({
                           <Button 
                             variant="ghost" 
                             size="icon" 
-                            className="h-8 w-8"
+                            className="h-9 w-9"
                             onClick={() => setDeleteSubtaskData({ taskId: task.id, subtaskId: subtask.id })}
                           >
                             <Trash2 className="h-5 w-5" />

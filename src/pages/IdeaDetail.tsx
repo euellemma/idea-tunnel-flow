@@ -9,7 +9,7 @@ import { GenerationChat } from '@/components/GenerationChat';
 import { useIdea } from '@/hooks/use-idea';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, Notebook, ListChecks } from 'lucide-react';
+import { ArrowLeft, Notebook, ListChecks } from 'lucide-react';
 
 export default function IdeaDetail() {
   const navigate = useNavigate();
@@ -65,17 +65,15 @@ export default function IdeaDetail() {
           <header className="py-4 px-4 flex items-center justify-between">
             <div className="flex items-center">
               <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
-                <ChevronLeft className="h-6 w-6" />
+                <ArrowLeft className="h-7 w-7" />
               </Button>
               
-              {idea.lastView === 'notes' && (
-                <Input
-                  value={idea.name}
-                  onChange={(e) => updateName(e.target.value)}
-                  className="text-xl font-medium border-none shadow-none focus-visible:ring-0 px-2 w-auto"
-                  placeholder="Untitled Idea"
-                />
-              )}
+              <Input
+                value={idea.name}
+                onChange={(e) => updateName(e.target.value)}
+                className="text-xl font-medium border-none shadow-none focus-visible:ring-0 px-2 w-auto"
+                placeholder="Untitled Idea"
+              />
             </div>
             
             <Button 
@@ -84,11 +82,11 @@ export default function IdeaDetail() {
               onClick={toggleView}
               className="text-sm font-normal"
             >
-              {idea.lastView === 'notes' ? <ListChecks className="h-6 w-6" /> : <Notebook className="h-6 w-6" />}
+              {idea.lastView === 'notes' ? <ListChecks className="h-7 w-7" /> : <Notebook className="h-7 w-7" />}
             </Button>
           </header>
           
-          <main className="flex-1 p-4 max-w-3xl mx-auto w-full">
+          <main className="flex-1 p-4 max-w-3xl mx-auto w-full overflow-hidden">
             {idea.lastView === 'notes' ? (
               <NotesEditor
                 notes={idea.notes}

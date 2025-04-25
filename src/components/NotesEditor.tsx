@@ -30,12 +30,12 @@ export function NotesEditor({ notes, onUpdateNotes }: NotesEditorProps) {
   }, [notes]);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full w-full">
       <Textarea
         value={localNotes}
         onChange={handleNotesChange}
         placeholder="Start typing your notes here..."
-        className="flex-1 resize-none border-none shadow-none focus-visible:ring-0 px-0 text-lg"
+        className="flex-1 resize-none border-none shadow-none focus-visible:ring-0 p-0 text-base min-h-[calc(100vh-7rem)]"
       />
     </div>
   );

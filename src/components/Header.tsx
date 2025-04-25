@@ -1,6 +1,6 @@
 
 import { useNavigate } from 'react-router-dom';
-import { Settings, Home, ChevronLeft, Notebook, ListChecks, Plus } from 'lucide-react';
+import { Settings, Home, ArrowLeft, Notebook, ListChecks, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTunnelStore } from '@/lib/store';
 
@@ -19,12 +19,12 @@ export function Header({ type, title, onToggleView, currentView }: HeaderProps) 
       <div className="flex items-center">
         {type === 'idea' && (
           <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
-            <ChevronLeft className="h-6 w-6" />
+            <ArrowLeft className="h-7 w-7" />
           </Button>
         )}
       </div>
       
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-3">
         {type === 'idea' && onToggleView && (
           <Button 
             variant="ghost" 
@@ -32,24 +32,24 @@ export function Header({ type, title, onToggleView, currentView }: HeaderProps) 
             onClick={onToggleView}
             className="text-sm font-normal"
           >
-            {currentView === 'notes' ? <ListChecks className="h-6 w-6" /> : <Notebook className="h-6 w-6" />}
+            {currentView === 'notes' ? <ListChecks className="h-7 w-7" /> : <Notebook className="h-7 w-7" />}
           </Button>
         )}
         
         {type === 'home' && (
           <>
-            <Button variant="ghost" size="icon" onClick={() => navigate('/idea/' + useTunnelStore.getState().createIdea())}>
-              <Plus className="h-6 w-6" />
-            </Button>
             <Button variant="ghost" size="icon" onClick={() => navigate('/settings')}>
-              <Settings className="h-6 w-6" />
+              <Settings className="h-7 w-7" />
+            </Button>
+            <Button variant="ghost" size="icon" onClick={() => navigate('/idea/' + useTunnelStore.getState().createIdea())}>
+              <Plus className="h-7 w-7" />
             </Button>
           </>
         )}
         
         {type === 'settings' && (
           <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
-            <Home className="h-6 w-6" />
+            <Home className="h-7 w-7" />
           </Button>
         )}
       </div>
