@@ -34,11 +34,11 @@ export default function Home() {
       <main className="flex-1 p-4 max-w-lg mx-auto w-full">
         {ideas.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-60">
-            <p className="text-tunnel-medium-gray text-center mb-4">
+            <p className="text-tunnel-medium-gray text-center mb-4 text-lg">
               You don't have any ideas yet. Create your first idea!
             </p>
-            <Button onClick={handleCreateIdea}>
-              <Plus className="h-5 w-5 mr-2" />
+            <Button onClick={handleCreateIdea} className="text-base">
+              <Plus className="h-6 w-6 mr-2" />
               New Idea
             </Button>
           </div>

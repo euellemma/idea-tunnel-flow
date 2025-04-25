@@ -1,9 +1,9 @@
-
 import { useState } from 'react';
 import { Edit3, Trash2, ChevronDown, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
+import { Card } from '@/components/ui/card';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -43,7 +43,6 @@ export function TodoList({
   const [deleteTaskId, setDeleteTaskId] = useState<string | null>(null);
   const [deleteSubtaskData, setDeleteSubtaskData] = useState<{taskId: string, subtaskId: string} | null>(null);
   
-  // Task expansion toggle
   const toggleTaskExpansion = (taskId: string) => {
     setExpandedTasks(prev => ({
       ...prev,
@@ -51,7 +50,6 @@ export function TodoList({
     }));
   };
   
-  // Subtask expansion toggle
   const toggleSubtaskExpansion = (subtaskId: string) => {
     setExpandedSubtasks(prev => ({
       ...prev,
@@ -59,19 +57,16 @@ export function TodoList({
     }));
   };
   
-  // Start editing a task
   const startEditingTask = (task: Task) => {
     setEditingTaskId(task.id);
     setEditingText(task.text);
   };
   
-  // Start editing a subtask
   const startEditingSubtask = (subtask: Subtask) => {
     setEditingSubtaskId(subtask.id);
     setEditingText(subtask.text);
   };
   
-  // Save task edit
   const saveTaskEdit = () => {
     if (editingTaskId) {
       onUpdateTaskText(editingTaskId, editingText);
@@ -79,7 +74,6 @@ export function TodoList({
     }
   };
   
-  // Save subtask edit
   const saveSubtaskEdit = (taskId: string) => {
     if (editingSubtaskId) {
       onUpdateSubtaskText(taskId, editingSubtaskId, editingText);
@@ -87,13 +81,11 @@ export function TodoList({
     }
   };
   
-  // Cancel editing
   const cancelEditing = () => {
     setEditingTaskId(null);
     setEditingSubtaskId(null);
   };
   
-  // Confirm task deletion
   const confirmDeleteTask = () => {
     if (deleteTaskId) {
       onDeleteTask(deleteTaskId);
@@ -101,7 +93,6 @@ export function TodoList({
     }
   };
   
-  // Confirm subtask deletion
   const confirmDeleteSubtask = () => {
     if (deleteSubtaskData) {
       onDeleteSubtask(deleteSubtaskData.taskId, deleteSubtaskData.subtaskId);
@@ -112,7 +103,7 @@ export function TodoList({
   if (!tasks || tasks.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-full py-10">
-        <p className="text-tunnel-medium-gray text-center">
+        <p className="text-tunnel-medium-gray text-center text-lg">
           No tasks yet. Click the sparkle button to generate tasks from your notes.
         </p>
       </div>
@@ -120,143 +111,147 @@ export function TodoList({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {tasks.map((task) => (
-        <div key={task.id} className="border-b border-tunnel-light-gray pb-2 last:border-b-0">
-          <div className="flex items-start mb-2 group">
-            <button 
-              onClick={() => toggleTaskExpansion(task.id)}
-              className="mt-1 mr-2 outline-none"
-            >
-              {expandedTasks[task.id] ? (
-                <ChevronDown className="h-4 w-4 text-tunnel-medium-gray" />
-              ) : (
-                <ChevronRight className="h-4 w-4 text-tunnel-medium-gray" />
-              )}
-            </button>
-            
-            <div className="flex-1">
-              {editingTaskId === task.id ? (
-                <div className="flex items-center">
-                  <Input
-                    value={editingText}
-                    onChange={(e) => setEditingText(e.target.value)}
-                    className="flex-1 mr-2"
-                    autoFocus
-                  />
-                  <div className="flex space-x-2">
-                    <Button size="sm" onClick={saveTaskEdit}>Save</Button>
-                    <Button size="sm" variant="outline" onClick={cancelEditing}>Cancel</Button>
+        <Card 
+          key={task.id} 
+          className="border-2 border-tunnel-light-gray overflow-hidden"
+        >
+          <div className="p-3">
+            <div className="flex items-start mb-2 group">
+              <button 
+                onClick={() => toggleTaskExpansion(task.id)}
+                className="mt-1 mr-2 outline-none"
+              >
+                {expandedTasks[task.id] ? (
+                  <ChevronDown className="h-5 w-5 text-tunnel-medium-gray" />
+                ) : (
+                  <ChevronRight className="h-5 w-5 text-tunnel-medium-gray" />
+                )}
+              </button>
+              
+              <div className="flex-1">
+                {editingTaskId === task.id ? (
+                  <div className="flex items-center">
+                    <Input
+                      value={editingText}
+                      onChange={(e) => setEditingText(e.target.value)}
+                      className="flex-1 mr-2 text-base"
+                      autoFocus
+                    />
+                    <div className="flex space-x-2">
+                      <Button size="sm" onClick={saveTaskEdit} className="text-base">Save</Button>
+                      <Button size="sm" variant="outline" onClick={cancelEditing} className="text-base">Cancel</Button>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <div 
-                  className="font-medium cursor-pointer"
-                  onClick={() => toggleTaskExpansion(task.id)}
-                >
-                  {task.text}
+                ) : (
+                  <div 
+                    className="font-medium cursor-pointer text-lg"
+                    onClick={() => toggleTaskExpansion(task.id)}
+                  >
+                    {task.text}
+                  </div>
+                )}
+              </div>
+              
+              {!editingTaskId && expandedTasks[task.id] && (
+                <div className="flex opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="h-8 w-8"
+                    onClick={() => startEditingTask(task)}
+                  >
+                    <Edit3 className="h-5 w-5" />
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="h-8 w-8"
+                    onClick={() => setDeleteTaskId(task.id)}
+                  >
+                    <Trash2 className="h-5 w-5" />
+                  </Button>
                 </div>
               )}
             </div>
             
-            {!editingTaskId && expandedTasks[task.id] && (
-              <div className="flex opacity-0 group-hover:opacity-100 transition-opacity">
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="h-8 w-8"
-                  onClick={() => startEditingTask(task)}
-                >
-                  <Edit3 className="h-4 w-4" />
-                </Button>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="h-8 w-8"
-                  onClick={() => setDeleteTaskId(task.id)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+            {expandedTasks[task.id] && (
+              <div className="pl-6 space-y-2">
+                {task.subtasks.map((subtask) => (
+                  <div key={subtask.id} className="pb-1">
+                    <div className="flex items-start group">
+                      <Checkbox
+                        checked={subtask.isCompleted}
+                        onCheckedChange={(checked) => 
+                          onUpdateSubtaskCompletion(task.id, subtask.id, checked === true)
+                        }
+                        className="mt-1 mr-2"
+                      />
+                      
+                      <div className="flex-1">
+                        {editingSubtaskId === subtask.id ? (
+                          <div className="flex items-center">
+                            <Input
+                              value={editingText}
+                              onChange={(e) => setEditingText(e.target.value)}
+                              className="flex-1 mr-2 text-base"
+                              autoFocus
+                            />
+                            <div className="flex space-x-2">
+                              <Button size="sm" onClick={() => saveSubtaskEdit(task.id)} className="text-base">Save</Button>
+                              <Button size="sm" variant="outline" onClick={cancelEditing} className="text-base">Cancel</Button>
+                            </div>
+                          </div>
+                        ) : (
+                          <>
+                            <div 
+                              className={`text-base cursor-pointer ${subtask.isCompleted ? 'line-through text-tunnel-medium-gray' : ''}`}
+                              onClick={() => toggleSubtaskExpansion(subtask.id)}
+                            >
+                              {subtask.text}
+                            </div>
+                            
+                            {expandedSubtasks[subtask.id] && (
+                              <div className="mt-2 ml-2 text-sm text-tunnel-medium-gray space-y-1">
+                                <div><span className="font-medium">Time:</span> {subtask.timeEstimate}</div>
+                                <div><span className="font-medium">Tip:</span> {subtask.tips}</div>
+                                <div><span className="font-medium">Note:</span> {subtask.encouragement}</div>
+                              </div>
+                            )}
+                          </>
+                        )}
+                      </div>
+                      
+                      {!editingSubtaskId && (
+                        <div className="flex opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className="h-8 w-8"
+                            onClick={() => startEditingSubtask(subtask)}
+                          >
+                            <Edit3 className="h-5 w-5" />
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className="h-8 w-8"
+                            onClick={() => setDeleteSubtaskData({ taskId: task.id, subtaskId: subtask.id })}
+                          >
+                            <Trash2 className="h-5 w-5" />
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
-          
-          {expandedTasks[task.id] && (
-            <div className="pl-6 space-y-2">
-              {task.subtasks.map((subtask) => (
-                <div key={subtask.id} className="pb-1">
-                  <div className="flex items-start group">
-                    <Checkbox
-                      checked={subtask.isCompleted}
-                      onCheckedChange={(checked) => 
-                        onUpdateSubtaskCompletion(task.id, subtask.id, checked === true)
-                      }
-                      className="mt-1 mr-2"
-                    />
-                    
-                    <div className="flex-1">
-                      {editingSubtaskId === subtask.id ? (
-                        <div className="flex items-center">
-                          <Input
-                            value={editingText}
-                            onChange={(e) => setEditingText(e.target.value)}
-                            className="flex-1 mr-2"
-                            autoFocus
-                          />
-                          <div className="flex space-x-2">
-                            <Button size="sm" onClick={() => saveSubtaskEdit(task.id)}>Save</Button>
-                            <Button size="sm" variant="outline" onClick={cancelEditing}>Cancel</Button>
-                          </div>
-                        </div>
-                      ) : (
-                        <>
-                          <div 
-                            className={`text-sm cursor-pointer ${subtask.isCompleted ? 'line-through text-tunnel-medium-gray' : ''}`}
-                            onClick={() => toggleSubtaskExpansion(subtask.id)}
-                          >
-                            {subtask.text}
-                          </div>
-                          
-                          {expandedSubtasks[subtask.id] && (
-                            <div className="mt-2 ml-2 text-xs text-tunnel-medium-gray space-y-1">
-                              <div><span className="font-medium">Time:</span> {subtask.timeEstimate}</div>
-                              <div><span className="font-medium">Tip:</span> {subtask.tips}</div>
-                              <div><span className="font-medium">Note:</span> {subtask.encouragement}</div>
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </div>
-                    
-                    {!editingSubtaskId && (
-                      <div className="flex opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="h-8 w-8"
-                          onClick={() => startEditingSubtask(subtask)}
-                        >
-                          <Edit3 className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="h-8 w-8"
-                          onClick={() => setDeleteSubtaskData({ taskId: task.id, subtaskId: subtask.id })}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        </Card>
       ))}
       
-      {/* Delete Task Confirmation Dialog */}
       <AlertDialog open={deleteTaskId !== null} onOpenChange={() => setDeleteTaskId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -272,7 +267,6 @@ export function TodoList({
         </AlertDialogContent>
       </AlertDialog>
       
-      {/* Delete Subtask Confirmation Dialog */}
       <AlertDialog open={deleteSubtaskData !== null} onOpenChange={() => setDeleteSubtaskData(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>

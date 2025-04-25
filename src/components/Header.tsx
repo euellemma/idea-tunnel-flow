@@ -15,11 +15,11 @@ export function Header({ type, title, onToggleView, currentView }: HeaderProps) 
   const navigate = useNavigate();
 
   return (
-    <header className="py-4 px-4 flex items-center justify-between border-b border-tunnel-light-gray">
+    <header className="py-4 px-4 flex items-center justify-between">
       <div className="flex items-center">
         {type === 'idea' && (
           <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
-            <ChevronLeft className="h-5 w-5" />
+            <ChevronLeft className="h-6 w-6" />
           </Button>
         )}
       </div>
@@ -32,24 +32,24 @@ export function Header({ type, title, onToggleView, currentView }: HeaderProps) 
             onClick={onToggleView}
             className="text-sm font-normal"
           >
-            {currentView === 'notes' ? <ListChecks className="h-5 w-5" /> : <Notebook className="h-5 w-5" />}
+            {currentView === 'notes' ? <ListChecks className="h-6 w-6" /> : <Notebook className="h-6 w-6" />}
           </Button>
         )}
         
         {type === 'home' && (
           <>
-            <Button variant="ghost" size="icon" onClick={() => navigate('/settings')}>
-              <Settings className="h-5 w-5" />
-            </Button>
             <Button variant="ghost" size="icon" onClick={() => navigate('/idea/' + useTunnelStore.getState().createIdea())}>
-              <Plus className="h-5 w-5" />
+              <Plus className="h-6 w-6" />
+            </Button>
+            <Button variant="ghost" size="icon" onClick={() => navigate('/settings')}>
+              <Settings className="h-6 w-6" />
             </Button>
           </>
         )}
         
         {type === 'settings' && (
           <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
-            <Home className="h-5 w-5" />
+            <Home className="h-6 w-6" />
           </Button>
         )}
       </div>
