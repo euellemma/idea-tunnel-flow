@@ -8,6 +8,8 @@ import { FloatingActionButton } from '@/components/FloatingActionButton';
 import { GenerationChat } from '@/components/GenerationChat';
 import { useIdea } from '@/hooks/use-idea';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft, Notebook, ListChecks } from 'lucide-react';
 
 export default function IdeaDetail() {
   const navigate = useNavigate();

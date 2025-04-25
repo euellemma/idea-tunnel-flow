@@ -54,6 +54,7 @@ interface TunnelState {
   updateSubtaskText: (ideaId: string, taskId: string, subtaskId: string, text: string) => void;
   deleteTask: (ideaId: string, taskId: string) => void;
   deleteSubtask: (ideaId: string, taskId: string, subtaskId: string) => void;
+  updateIdea: (id: string, updatedFields: Partial<Idea>) => void;
 }
 
 export const useTunnelStore = create<TunnelState>()(
@@ -120,6 +121,14 @@ export const useTunnelStore = create<TunnelState>()(
         ideas: state.ideas.map(idea => 
           idea.id === id 
             ? { ...idea, todoList, updatedAt: new Date().toISOString() } 
+            : idea
+        )
+      })),
+
+      updateIdea: (id, updatedFields) => set((state) => ({
+        ideas: state.ideas.map(idea =>
+          idea.id === id
+            ? { ...idea, ...updatedFields, updatedAt: new Date().toISOString() }
             : idea
         )
       })),
