@@ -1,10 +1,8 @@
 
 import { useState } from 'react';
-import { Send } from 'lucide-react';
+import { Send, ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Header } from '@/components/Header';
-import { useNavigate } from 'react-router-dom';
 
 interface Message {
   id: string;
@@ -14,10 +12,10 @@ interface Message {
 
 interface GenerationChatProps {
   onGenerate: (prompt: string) => Promise<unknown>;
+  onBack: () => void;
 }
 
-export function GenerationChat({ onGenerate }: GenerationChatProps) {
-  const navigate = useNavigate();
+export function GenerationChat({ onGenerate, onBack }: GenerationChatProps) {
   const [prompt, setPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -68,7 +66,13 @@ export function GenerationChat({ onGenerate }: GenerationChatProps) {
 
   return (
     <div className="flex flex-col h-screen">
-      <Header type="idea" title="Generate To-Do List" />
+      <header className="py-4 px-4 flex items-center justify-between border-b border-tunnel-light-gray">
+        <Button variant="ghost" size="icon" onClick={onBack}>
+          <ChevronLeft className="h-5 w-5" />
+        </Button>
+        <h1 className="text-lg font-medium">Generate To-Do List</h1>
+        <div className="w-10"></div> {/* Empty div for centering */}
+      </header>
       
       <div className="flex-1 overflow-auto p-4 space-y-4">
         {messages.length === 0 ? (

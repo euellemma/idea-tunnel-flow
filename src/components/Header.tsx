@@ -1,7 +1,8 @@
 
 import { useNavigate } from 'react-router-dom';
-import { Settings, Home, ChevronLeft } from 'lucide-react';
+import { Settings, Home, ChevronLeft, Notebook, ListChecks, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useTunnelStore } from '@/lib/store';
 
 interface HeaderProps {
   type: 'home' | 'settings' | 'idea';
@@ -21,25 +22,29 @@ export function Header({ type, title, onToggleView, currentView }: HeaderProps) 
             <ChevronLeft className="h-5 w-5" />
           </Button>
         )}
-        <h1 className="text-xl font-medium ml-2">{title || 'Tunnel'}</h1>
       </div>
       
       <div className="flex items-center space-x-2">
         {type === 'idea' && onToggleView && (
           <Button 
             variant="ghost" 
-            size="sm" 
+            size="icon"
             onClick={onToggleView}
             className="text-sm font-normal"
           >
-            {currentView === 'notes' ? 'View To-Do List' : 'View Notes'}
+            {currentView === 'notes' ? <ListChecks className="h-5 w-5" /> : <Notebook className="h-5 w-5" />}
           </Button>
         )}
         
         {type === 'home' && (
-          <Button variant="ghost" size="icon" onClick={() => navigate('/settings')}>
-            <Settings className="h-5 w-5" />
-          </Button>
+          <>
+            <Button variant="ghost" size="icon" onClick={() => navigate('/settings')}>
+              <Settings className="h-5 w-5" />
+            </Button>
+            <Button variant="ghost" size="icon" onClick={() => navigate('/idea/' + useTunnelStore.getState().createIdea())}>
+              <Plus className="h-5 w-5" />
+            </Button>
+          </>
         )}
         
         {type === 'settings' && (

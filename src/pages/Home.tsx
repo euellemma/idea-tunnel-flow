@@ -1,7 +1,7 @@
 
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus } from 'lucide-react';
+import { Plus, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Header } from '@/components/Header';
 import { IdeaListItem } from '@/components/IdeaListItem';
@@ -32,8 +32,6 @@ export default function Home() {
       <Header type="home" />
       
       <main className="flex-1 p-4 max-w-lg mx-auto w-full">
-        <h1 className="text-2xl font-medium mb-6">My Ideas</h1>
-        
         {ideas.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-60">
             <p className="text-tunnel-medium-gray text-center mb-4">
@@ -45,23 +43,15 @@ export default function Home() {
             </Button>
           </div>
         ) : (
-          <>
-            <div className="mb-4">
-              <Button onClick={handleCreateIdea} className="w-full">
-                <Plus className="h-5 w-5 mr-2" />
-                New Idea
-              </Button>
-            </div>
-            <div>
-              {ideas.map(idea => (
-                <IdeaListItem 
-                  key={idea.id} 
-                  idea={idea} 
-                  onDelete={deleteIdea} 
-                />
-              ))}
-            </div>
-          </>
+          <div>
+            {ideas.map(idea => (
+              <IdeaListItem 
+                key={idea.id} 
+                idea={idea} 
+                onDelete={deleteIdea} 
+              />
+            ))}
+          </div>
         )}
       </main>
     </div>

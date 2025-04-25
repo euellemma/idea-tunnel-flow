@@ -52,12 +52,14 @@ export default function IdeaDetail() {
   return (
     <>
       {showGenerationChat ? (
-        <GenerationChat onGenerate={handleGenerate} />
+        <GenerationChat 
+          onGenerate={handleGenerate} 
+          onBack={() => setShowGenerationChat(false)}
+        />
       ) : (
         <div className="flex flex-col min-h-screen">
           <Header 
             type="idea" 
-            title={idea.name} 
             onToggleView={toggleView}
             currentView={idea.lastView}
           />

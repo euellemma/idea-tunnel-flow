@@ -61,7 +61,7 @@ export const useTunnelStore = create<TunnelState>()(
     (set) => ({
       settings: {
         apiKey: '',
-        modelName: 'claude-3-opus-20240229',
+        modelName: 'google/gemini-2.0-flash-lite-001',
       },
       ideas: [],
       

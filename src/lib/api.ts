@@ -37,7 +37,7 @@ export async function generateTodoList(idea: Idea, userPrompt: string): Promise<
     }
   ]
 }
-Generate unique IDs for each task and subtask. Create logical tasks and subtasks based on the user's input. Ensure metadata is relevant and helpful.`;
+Generate unique IDs for each task and subtask. Create logical tasks and subtasks based on the user's input. Ensure metadata is relevant and helpful. REMEMBER TO ONLY OUTPUT JSON WITHOUT ANY OTHER TEXT OR FORMATTING.`;
 
   // Build the user prompt based on whether this is initial or regeneration
   let userContent: string;
@@ -91,7 +91,8 @@ ${userPrompt}
         model: modelName,
         messages,
         temperature: 0.2, // Lower temperature for more consistent formatting
-        max_tokens: 2048
+        max_tokens: 2048,
+        response_format: { type: "json_object" } // Request JSON response format
       })
     });
     
