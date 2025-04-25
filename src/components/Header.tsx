@@ -1,8 +1,8 @@
-
 import { useNavigate } from 'react-router-dom';
 import { Settings, Home, ArrowLeft, Notebook, ListChecks, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTunnelStore } from '@/lib/store';
+import { SyncButton } from './SyncButton';
 
 interface HeaderProps {
   type: 'home' | 'settings' | 'idea';
@@ -13,6 +13,7 @@ interface HeaderProps {
 
 export function Header({ type, title, onToggleView, currentView }: HeaderProps) {
   const navigate = useNavigate();
+  const { settings } = useTunnelStore();
 
   return (
     <header className="py-4 px-4 flex items-center justify-between">
@@ -38,6 +39,7 @@ export function Header({ type, title, onToggleView, currentView }: HeaderProps) 
         
         {type === 'home' && (
           <>
+            {settings.username && <SyncButton />}
             <Button variant="ghost" size="icon" onClick={() => navigate('/settings')}>
               <Settings className="h-7 w-7" />
             </Button>

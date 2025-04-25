@@ -1,4 +1,3 @@
-
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -35,13 +34,20 @@ export interface Idea {
 export interface Settings {
   apiKey: string;
   modelName: string;
+  username: string;
 }
 
 interface TunnelState {
   settings: Settings;
   ideas: Idea[];
+  lastModified: string | null;
+  isSyncNeeded: boolean;
+  
   setApiKey: (apiKey: string) => void;
   setModelName: (modelName: string) => void;
+  setUsername: (username: string) => void;
+  setSyncNeeded: (needed: boolean) => void;
+  setLastModified: (timestamp: string) => void;
   createIdea: () => string;
   updateIdeaName: (id: string, name: string) => void;
   updateIdeaNotes: (id: string, notes: string) => void;
@@ -63,6 +69,7 @@ export const useTunnelStore = create<TunnelState>()(
       settings: {
         apiKey: '',
         modelName: 'google/gemini-2.0-flash-lite-001',
+        username: '',
       },
       ideas: [],
       
@@ -73,6 +80,14 @@ export const useTunnelStore = create<TunnelState>()(
       setModelName: (modelName) => set((state) => ({
         settings: { ...state.settings, modelName }
       })),
+      
+      setUsername: (username) => set((state) => ({
+        settings: { ...state.settings, username }
+      })),
+      
+      setSyncNeeded: (needed) => set({ isSyncNeeded: needed }),
+      
+      setLastModified: (timestamp) => set({ lastModified: timestamp }),
       
       createIdea: () => {
         const id = crypto.randomUUID();

@@ -9,7 +9,30 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      tunnel_sync: {
+        Row: {
+          created_at: string
+          data: Json | null
+          id: number
+          last_modified: string | null
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          id?: number
+          last_modified?: string | null
+          username: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          id?: number
+          last_modified?: string | null
+          username?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
